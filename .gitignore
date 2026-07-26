@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.Python
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# Jupyter
+.ipynb_checkpoints/
+*.nbconvert.ipynb
+profile_default/
+ipython_config.py
+
+# CatBoost writes training logs beside the notebook
+catboost_info/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+
+# Keep data/ and artifacts/ committed on purpose: the dataset is small (20 KB) and
+# synthetic, and the processed CSVs plus the JSON recipe are what make every notebook
+# reproducible without a re-run.

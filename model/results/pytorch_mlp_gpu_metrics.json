@@ -1,0 +1,78 @@
+{
+  "model": "PyTorch MLP (GPU)",
+  "library": "torch 2.13.0.dev20260529+cu126",
+  "device": "cuda",
+  "feature_space": "engineered",
+  "features": [
+    "Age",
+    "BMI",
+    "Testosterone",
+    "Antral_Follicle_Count",
+    "Menstrual_Irregularity",
+    "BMI_over_25",
+    "Testosterone_over_40",
+    "Antral_Follicle_Count_over_10",
+    "all_criteria_met"
+  ],
+  "n_train": 800,
+  "n_test": 200,
+  "hyperparameters": {
+    "hidden": [
+      64,
+      32
+    ],
+    "dropout": 0.1,
+    "lr": 0.003,
+    "weight_decay": 0.0001,
+    "batch_size": 64,
+    "max_epochs": 400,
+    "patience": 40,
+    "val_fraction": 0.2
+  },
+  "test_metrics": {
+    "accuracy": 1.0,
+    "balanced_accuracy": 1.0,
+    "precision (PPV)": 1.0,
+    "recall (sensitivity)": 1.0,
+    "specificity": 1.0,
+    "NPV": 1.0,
+    "f1": 1.0,
+    "roc_auc": 1.0,
+    "pr_auc (avg prec)": 1.0,
+    "MCC": 1.0,
+    "cohen_kappa": 1.0,
+    "log_loss": 1.279636489925906e-05,
+    "brier_score": 2.856892222791174e-10
+  },
+  "confusion_matrix": {
+    "tn": 160,
+    "fp": 0,
+    "fn": 0,
+    "tp": 40
+  },
+  "margin": {
+    "mean_margin": 0.9999743700027466,
+    "min_margin": 0.9998664855957031,
+    "p05_margin": 0.9999268054962158,
+    "median_margin": 0.9999815225601196,
+    "frac_above_0.90": 1.0,
+    "frac_below_0.20": 0.0,
+    "mean_P(PCOS) | true 0": 1.5221603462123312e-05,
+    "mean_P(PCOS) | true 1": 0.9999969601631165,
+    "probability_gap": 0.9999817609786987
+  },
+  "cv": {
+    "folds": 5,
+    "accuracy_mean": 1.0,
+    "accuracy_std": 0.0,
+    "f1_mean": 1.0,
+    "f1_std": 0.0
+  },
+  "timing_seconds": {
+    "gpu_fit_seconds": 44.2274,
+    "cpu_fit_seconds": 28.3038,
+    "gpu_speedup": 0.64,
+    "epochs": 293,
+    "ms_per_epoch_gpu": 150.947
+  }
+}

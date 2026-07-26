@@ -1,0 +1,338 @@
+{
+  "source_file": "pcos_dataset.csv",
+  "created_from": "preprocess.ipynb",
+  "rows": {
+    "raw": 1000,
+    "clean": 1000,
+    "train": 800,
+    "test": 200
+  },
+  "target": "PCOS_Diagnosis",
+  "input_columns": [
+    "Age",
+    "BMI",
+    "Testosterone",
+    "Antral_Follicle_Count",
+    "Menstrual_Irregularity"
+  ],
+  "column_renames": {
+    "Testosterone_Level(ng/dL)": "Testosterone"
+  },
+  "split": {
+    "test_size": 0.2,
+    "stratified": true,
+    "random_state": 42,
+    "cv_folds": 5
+  },
+  "class_balance": {
+    "train_positive_rate": 0.19875,
+    "test_positive_rate": 0.2,
+    "class_weights_balanced": {
+      "0": 0.62402496099844,
+      "1": 2.5157232704402515
+    }
+  },
+  "learned_thresholds": {
+    "BMI": 25.0,
+    "Testosterone": 40.0,
+    "Antral_Follicle_Count": 10.0
+  },
+  "threshold_source": {
+    "BMI": "tree+clinical-snap",
+    "Testosterone": "tree+clinical-snap",
+    "Antral_Follicle_Count": "tree+clinical-snap"
+  },
+  "threshold_rule_train_accuracy": 1.0,
+  "feature_spaces": {
+    "raw": {
+      "description": "5 original columns, imputed only. Unscaled - the tree-model input.",
+      "n_features": 5,
+      "columns": [
+        "Age",
+        "BMI",
+        "Testosterone",
+        "Antral_Follicle_Count",
+        "Menstrual_Irregularity"
+      ]
+    },
+    "scaled": {
+      "description": "Raw + standardised continuous columns. For LogReg / SVM / KNN / MLP.",
+      "n_features": 5,
+      "columns": [
+        "Age",
+        "BMI",
+        "Testosterone",
+        "Antral_Follicle_Count",
+        "Menstrual_Irregularity"
+      ]
+    },
+    "engineered": {
+      "description": "Raw + learned threshold indicators + the AND flag. The ceiling space.",
+      "n_features": 9,
+      "columns": [
+        "Age",
+        "BMI",
+        "Testosterone",
+        "Antral_Follicle_Count",
+        "Menstrual_Irregularity",
+        "BMI_over_25",
+        "Testosterone_over_40",
+        "Antral_Follicle_Count_over_10",
+        "all_criteria_met"
+      ]
+    },
+    "lean": {
+      "description": "Threshold indicators + menstrual gate only. 4 binary columns, no scaling.",
+      "n_features": 4,
+      "columns": [
+        "Menstrual_Irregularity",
+        "BMI_over_25",
+        "Testosterone_over_40",
+        "Antral_Follicle_Count_over_10"
+      ]
+    },
+    "count": {
+      "description": "The criteria-count column alone. 1 column, the smallest space that works.",
+      "n_features": 1,
+      "columns": [
+        "criteria_met"
+      ]
+    }
+  },
+  "recipe": {
+    "raw": {
+      "columns_out": [
+        "Age",
+        "BMI",
+        "Testosterone",
+        "Antral_Follicle_Count",
+        "Menstrual_Irregularity"
+      ],
+      "impute_fill": {
+        "Age": 32.0,
+        "BMI": 26.4,
+        "Testosterone": 59.6,
+        "Antral_Follicle_Count": 17.0,
+        "Menstrual_Irregularity": 1.0
+      }
+    },
+    "scaled": {
+      "columns_out": [
+        "Age",
+        "BMI",
+        "Testosterone",
+        "Antral_Follicle_Count",
+        "Menstrual_Irregularity"
+      ],
+      "impute_fill": {
+        "Age": 32.0,
+        "BMI": 26.4,
+        "Testosterone": 59.6,
+        "Antral_Follicle_Count": 17.0,
+        "Menstrual_Irregularity": 1.0
+      },
+      "standardise": {
+        "columns": [
+          "Age",
+          "BMI",
+          "Testosterone",
+          "Antral_Follicle_Count"
+        ],
+        "mean": [
+          31.65625,
+          26.34375,
+          59.979875,
+          17.3425
+        ],
+        "scale": [
+          8.515901945037884,
+          4.969344618508561,
+          23.144472503912784,
+          7.056216673969132
+        ]
+      }
+    },
+    "engineered": {
+      "columns_out": [
+        "Age",
+        "BMI",
+        "Testosterone",
+        "Antral_Follicle_Count",
+        "Menstrual_Irregularity",
+        "BMI_over_25",
+        "Testosterone_over_40",
+        "Antral_Follicle_Count_over_10",
+        "all_criteria_met"
+      ],
+      "impute_fill": {
+        "Age": 32.0,
+        "BMI": 26.4,
+        "Testosterone": 59.6,
+        "Antral_Follicle_Count": 17.0,
+        "Menstrual_Irregularity": 1.0
+      },
+      "thresholds": {
+        "BMI": 25.0,
+        "Testosterone": 40.0,
+        "Antral_Follicle_Count": 10.0
+      },
+      "indicator_names": [
+        "BMI_over_25",
+        "Testosterone_over_40",
+        "Antral_Follicle_Count_over_10"
+      ],
+      "gate_features": [
+        "Menstrual_Irregularity"
+      ],
+      "standardise": {
+        "columns": [
+          "Age",
+          "BMI",
+          "Testosterone",
+          "Antral_Follicle_Count"
+        ],
+        "mean": [
+          31.65625,
+          26.34375,
+          59.979875,
+          17.3425
+        ],
+        "scale": [
+          8.515901945037884,
+          4.969344618508561,
+          23.144472503912784,
+          7.056216673969132
+        ]
+      }
+    },
+    "lean": {
+      "columns_out": [
+        "Menstrual_Irregularity",
+        "BMI_over_25",
+        "Testosterone_over_40",
+        "Antral_Follicle_Count_over_10"
+      ],
+      "impute_fill": {
+        "Age": 32.0,
+        "BMI": 26.4,
+        "Testosterone": 59.6,
+        "Antral_Follicle_Count": 17.0,
+        "Menstrual_Irregularity": 1.0
+      },
+      "thresholds": {
+        "BMI": 25.0,
+        "Testosterone": 40.0,
+        "Antral_Follicle_Count": 10.0
+      },
+      "indicator_names": [
+        "BMI_over_25",
+        "Testosterone_over_40",
+        "Antral_Follicle_Count_over_10"
+      ],
+      "gate_features": [
+        "Menstrual_Irregularity"
+      ]
+    },
+    "count": {
+      "columns_out": [
+        "criteria_met"
+      ],
+      "impute_fill": {
+        "Age": 32.0,
+        "BMI": 26.4,
+        "Testosterone": 59.6,
+        "Antral_Follicle_Count": 17.0,
+        "Menstrual_Irregularity": 1.0
+      },
+      "thresholds": {
+        "BMI": 25.0,
+        "Testosterone": 40.0,
+        "Antral_Follicle_Count": 10.0
+      },
+      "indicator_names": [
+        "BMI_over_25",
+        "Testosterone_over_40",
+        "Antral_Follicle_Count_over_10"
+      ],
+      "gate_features": [
+        "Menstrual_Irregularity"
+      ]
+    }
+  },
+  "cleaning_log": [
+    {
+      "step": "rename_columns",
+      "rows_affected": 1,
+      "detail": "{'Testosterone_Level(ng/dL)': 'Testosterone'}"
+    },
+    {
+      "step": "finalise",
+      "rows_affected": 1000,
+      "detail": "1,000 rows x 6 columns retained"
+    }
+  ],
+  "cv_accuracy": {
+    "raw": {
+      "Gaussian Naive Bayes": 0.7212500000000001,
+      "SVM (RBF)": 0.8012499999999999,
+      "K-Nearest Neighbours": 0.80625,
+      "Logistic Regression": 0.9099999999999999,
+      "HistGradientBoosting": 0.99875,
+      "Decision Tree": 0.99875,
+      "Random Forest": 0.99875
+    },
+    "scaled": {
+      "Gaussian Naive Bayes": 0.6737500000000001,
+      "SVM (RBF)": 0.9650000000000001,
+      "K-Nearest Neighbours": 0.9637499999999999,
+      "Logistic Regression": 0.9099999999999999,
+      "HistGradientBoosting": 0.99875,
+      "Decision Tree": 0.99875,
+      "Random Forest": 0.99875
+    },
+    "engineered": {
+      "Gaussian Naive Bayes": 1.0,
+      "SVM (RBF)": 1.0,
+      "K-Nearest Neighbours": 1.0,
+      "Logistic Regression": 1.0,
+      "HistGradientBoosting": 1.0,
+      "Decision Tree": 1.0,
+      "Random Forest": 1.0
+    },
+    "lean": {
+      "Gaussian Naive Bayes": 1.0,
+      "SVM (RBF)": 1.0,
+      "K-Nearest Neighbours": 1.0,
+      "Logistic Regression": 1.0,
+      "HistGradientBoosting": 1.0,
+      "Decision Tree": 1.0,
+      "Random Forest": 1.0
+    },
+    "count": {
+      "Gaussian Naive Bayes": 1.0,
+      "SVM (RBF)": 1.0,
+      "K-Nearest Neighbours": 1.0,
+      "Logistic Regression": 1.0,
+      "HistGradientBoosting": 1.0,
+      "Decision Tree": 1.0,
+      "Random Forest": 1.0
+    }
+  },
+  "recommendations": {
+    "tree_models": "raw or engineered (scaling is a no-op for trees)",
+    "linear_distance_models": "scaled at minimum; engineered to remove the bias",
+    "best_accuracy": "engineered - 100% CV and 100% hold-out for every algorithm, on test vectors that are all unseen",
+    "imbalance": "class_weight='balanced' if needed; do NOT resample (see section 9)",
+    "drop_age": "no benefit - identical for trees, marginally worse for linear models; kept in raw/scaled/engineered, absent from lean/count",
+    "criteria_met": "excluded from `engineered` (exact sum of the indicators -> singular design matrix, zero accuracy gain); shipped as the `count` space",
+    "singular_covariance": "QDA and similar need reg_param>0 in EVERY space including raw: Menstrual_Irregularity is constant within the positive class, so the class covariance is singular before any engineering",
+    "lookup_caveat": "lean has 16 distinct vectors and count has 5, so every test row reuses a training vector; quote raw/engineered for generalisation",
+    "no_pickle": "pipelines are NOT pickled - the transformer class lives in a notebook and would serialise as __main__.X; use `recipe` above to re-apply it"
+  },
+  "environment": {
+    "python": "3.14.3",
+    "numpy": "2.4.2",
+    "pandas": "3.0.1",
+    "scikit-learn": "1.9.0"
+  }
+}

@@ -1,0 +1,22 @@
+# Core — versions this project was developed and executed against (Python 3.14)
+numpy==2.4.2
+pandas==3.0.1
+scikit-learn==1.9.0
+scipy==1.17.1
+matplotlib==3.10.8
+seaborn==0.13.2
+joblib==1.5.3
+
+# Notebook environment
+jupyterlab
+nbformat
+ipykernel
+
+# Gradient boosting (both ship GPU support in the standard wheel)
+xgboost==3.3.0
+catboost==1.2.10
+
+# PyTorch — install the CUDA build that matches your driver, e.g.
+#   pip install torch --index-url https://download.pytorch.org/whl/cu126
+# CPU-only also works; see the Setup section of README.md
+torch
